@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fichas Disponibles — Hospital de Clínicas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/Frontend/css/fichas_disponible.css">
+</head>
+<body>
+
+    <div class="bg-mesh"></div>
+    <div class="bg-grid"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="/Frontend/images/logo.jpg" alt="Logo" class="nav-logo-img">
+            <span class="nav-title">Hospital de Clínicas</span>
+        </div>
+        <div class="nav-right">
+            <a href="/Frontend/pages/opcion.html" class="nav-back">← Volver</a>
+            <a href="/Frontend/pages/login.html" class="nav-login">Iniciar sesión</a>
+        </div>
+    </nav>
+
+    <main class="main">
+
+        <!-- ── PASO 1: ESPECIALIDADES ── -->
+        <section class="step-section active" id="step1">
+
+            <div class="step-header">
+                <div class="step-badge">Paso 1 de 2</div>
+                <h1 class="step-title">Elige una <span class="accent">especialidad</span></h1>
+                <p class="step-desc">Selecciona el área médica que necesitas para ver fechas y cupos disponibles.</p>
+            </div>
+
+            <div class="search-bar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchEsp" placeholder="Buscar especialidad..." oninput="filtrarEspecialidades(this.value)">
+            </div>
+
+            <div class="esp-grid" id="espGrid">
+                <div class="esp-skeleton"></div>
+                <div class="esp-skeleton"></div>
+                <div class="esp-skeleton"></div>
+                <div class="esp-skeleton"></div>
+                <div class="esp-skeleton"></div>
+                <div class="esp-skeleton"></div>
+            </div>
+
+        </section>
+
+        <!-- ── PASO 2: FECHAS / CUPOS / MÉDICO ── -->
+        <section class="step-section" id="step2">
+
+            <div class="step-header">
+                <button class="btn-back-step" onclick="volverPaso1()">
+                    ← Cambiar especialidad
+                </button>
+                <div class="step-badge">Paso 2 de 2</div>
+                <h1 class="step-title" id="tituloEsp">Fechas disponibles</h1>
+                <p class="step-desc">Selecciona la fecha que prefieras para tu consulta.</p>
+            </div>
+
+            <div class="fechas-grid" id="fechasGrid">
+                <div class="fecha-skeleton"></div>
+                <div class="fecha-skeleton"></div>
+                <div class="fecha-skeleton"></div>
+            </div>
+
+            <!-- Detalle del cupo seleccionado -->
+            <div class="cupo-detalle" id="cupoDetalle" hidden>
+                <div class="detalle-card">
+                    <div class="detalle-header">
+                        <h3 class="detalle-titulo">Detalle de la consulta</h3>
+                        <span class="detalle-fecha" id="detalleFecha"></span>
+                    </div>
+                    <div class="detalle-body">
+                        <div class="detalle-item">
+                            <span class="detalle-label">Especialidad</span>
+                            <span class="detalle-valor" id="detalleEsp"></span>
+                        </div>
+                        <div class="detalle-item">
+                            <span class="detalle-label">Médico</span>
+                            <span class="detalle-valor" id="detalleMedico"></span>
+                        </div>
+                        <div class="detalle-item">
+                            <span class="detalle-label">Cupos disponibles</span>
+                            <span class="detalle-valor" id="detalleCupos"></span>
+                        </div>
+                        <div class="detalle-item">
+                            <span class="detalle-label">Tu turno estimado</span>
+                            <span class="detalle-valor detalle-turno" id="detalleTurno"></span>
+                        </div>
+                    </div>
+                    <button class="btn-reservar" onclick="abrirModalReserva()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17">
+                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="12" y1="18" x2="12" y2="12"/>
+                            <line x1="9" y1="15" x2="15" y2="15"/>
+                        </svg>
+                        Reservar esta ficha
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ══════════════════════════════════════════
+         MODAL RESERVA SIN CUENTA
+    ══════════════════════════════════════════ -->
+    <div class="modal-overlay" id="modalReserva">
+        <div class="modal">
+
+            <div class="modal-header">
+                <div>
+                    <h3 class="modal-title">Reservar ficha</h3>
+                    <p class="modal-subtitle">Ingresa tus datos para confirmar la reserva</p>
+                </div>
+                <button class="modal-close" onclick="cerrarModal()">✕</button>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- Resumen -->
+                <div class="reserva-resumen">
+                    <div class="resumen-item">
+                        <span>📋</span>
+                        <span id="resumenEsp">—</span>
+                    </div>
+                    <div class="resumen-item">
+                        <span>📅</span>
+                        <span id="resumenFecha">—</span>
+                    </div>
+                    <div class="resumen-item">
+                        <span>🔢</span>
+                        <span>Turno N° <strong id="resumenTurno">—</strong></span>
+                    </div>
+                </div>
+
+                <form id="formReserva" onsubmit="confirmarReserva(event)">
+
+                    <div class="form-grid">
+                        <div class="field-group">
+                            <label class="field-label">CI *</label>
+                            <input class="field-input" type="text" id="res_ci" placeholder="12345678" required>
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Teléfono *</label>
+                            <input class="field-input" type="tel" id="res_telefono" placeholder="70000000" required>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label class="field-label">Nombre(s) *</label>
+                        <input class="field-input" type="text" id="res_nombre" placeholder="Juan Carlos" required>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="field-group">
+                            <label class="field-label">Apellido paterno *</label>
+                            <input class="field-input" type="text" id="res_ap_paterno" placeholder="Pérez" required>
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Apellido materno *</label>
+                            <input class="field-input" type="text" id="res_ap_materno" placeholder="López" required>
+                        </div>
+                    </div>
+
+                    <div id="msgReserva" class="form-msg"></div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="cerrarModal()">Cancelar</button>
+                        <button type="submit" class="btn-primary" id="btnConfirmar">
+                            <span class="btn-text">Confirmar reserva</span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal éxito -->
+    <div class="modal-overlay" id="modalExito">
+        <div class="modal modal-exito">
+            <div class="exito-icon">✓</div>
+            <h3 class="exito-title">¡Ficha reservada!</h3>
+            <p class="exito-desc">Tu reserva fue confirmada exitosamente.</p>
+            <div class="exito-detalle" id="exitoDetalle"></div>
+            <button class="btn-primary" onclick="cerrarExito()">Entendido</button>
+        </div>
+    </div>
+
+    <!-- Modal credenciales autogeneradas -->
+    <div class="modal-overlay" id="modalCredenciales">
+        <div class="modal modal-credenciales">
+            <div class="exito-icon">🔐</div>
+            <h3 class="exito-title">Te creamos una cuenta</h3>
+            <p class="exito-desc">
+                Con esta cuenta podrás confirmar tu asistencia antes de la cita.
+                Necesitas confirmarla con al menos 24 horas de anticipación, o el
+                cupo se liberará automáticamente.
+            </p>
+
+            <div style="background:rgba(252,211,77,0.08);border:1.5px solid #FCD34D;
+                        border-radius:12px;padding:18px 20px;margin:18px 0;text-align:left;width:100%">
+                <div style="margin-bottom:14px">
+                    <div style="font-size:0.75rem;color:#FCD34D;text-transform:uppercase;
+                                letter-spacing:0.05em;font-weight:700;margin-bottom:4px">
+                        Usuario (tu CI)</div>
+                    <div id="credUsuario" style="font-size:1.3rem;font-weight:700;
+                                color:#ffffff;font-family:'Courier New',monospace"></div>
+                </div>
+                <div>
+                    <div style="font-size:0.75rem;color:#FCD34D;text-transform:uppercase;
+                                letter-spacing:0.05em;font-weight:700;margin-bottom:4px">
+                        Contraseña (tu celular)</div>
+                    <div id="credPassword" style="font-size:1.3rem;font-weight:700;
+                                color:#ffffff;font-family:'Courier New',monospace"></div>
+                </div>
+            </div>
+
+            <p style="font-size:0.85rem;color:#FCD34D;font-weight:600;margin-bottom:16px">
+                📥 Descarga una imagen con tus datos antes de continuar.
+            </p>
+
+            <button class="btn-secondary" id="btnDescargarCred"
+                    onclick="descargarCredenciales()" style="width:100%;margin-bottom:12px">
+                📥 Descargar mis credenciales
+            </button>
+
+            <button class="btn-primary" id="btnIrLogin" disabled
+                    onclick="irALogin()" style="opacity:1">
+                Ir a iniciar sesión
+            </button>
+        </div>
+    </div>
+
+    <script src="../js/fichas_disponibles.js"></script>
+</body>
+</html>

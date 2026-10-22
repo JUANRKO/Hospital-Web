@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitar Ficha — Hospital de Clínicas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/opcion.css">
+</head>
+<body>
+
+    <!-- Fondo -->
+    <div class="bg-mesh"></div>
+    <div class="bg-grid"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="../images/logo.jpg" alt="Logo" class="nav-logo-img">
+            <span class="nav-title">Hospital de Clínicas</span>
+        </div>
+        <a href="/Frontend/index.html" class="nav-back">← Volver al inicio</a>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="main">
+
+        <!-- Encabezado -->
+        <div class="hero" id="hero">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                ATENCIÓN 24 HORAS · 7 DÍAS A LA SEMANA
+            </div>
+            <h1 class="hero-title">
+                ¿Cómo deseas<br>
+                <span class="hero-accent">solicitar tu ficha?</span>
+            </h1>
+            <p class="hero-desc">
+                Elige la opción que mejor se adapte a ti. Ambas te permiten reservar una consulta con nuestros especialistas.
+            </p>
+        </div>
+
+        <!-- Tarjetas de opción -->
+        <div class="cards-wrapper" id="cardsWrapper">
+
+            <!-- OPCIÓN 1: Sin cuenta -->
+            <div class="option-card" id="cardSin">
+                <div class="card-glow card-glow--teal"></div>
+
+                <div class="card-top">
+                    <div class="card-icon card-icon--teal">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/>
+                            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                            <path d="M18 3l1.5 1.5L22 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="card-label card-label--teal">Acceso rápido</div>
+                </div>
+
+                <h2 class="card-title">Continuar sin cuenta</h2>
+                <p class="card-desc">Consulta especialidades y reserva una ficha de forma rápida, sin necesidad de registrarte.</p>
+
+                <ul class="benefit-list">
+                    <li class="benefit-item benefit--yes">
+                        <span class="benefit-icon">✓</span>
+                        Ver especialidades disponibles
+                    </li>
+                    <li class="benefit-item benefit--yes">
+                        <span class="benefit-icon">✓</span>
+                        Reservar ficha médica
+                    </li>
+                    <li class="benefit-item benefit--yes">
+                        <span class="benefit-icon">✓</span>
+                        Ver horarios y médicos
+                    </li>
+                    <li class="benefit-item benefit--no">
+                        <span class="benefit-icon">✗</span>
+                        Historial de consultas
+                    </li>
+                    <li class="benefit-item benefit--no">
+                        <span class="benefit-icon">✗</span>
+                        Reservar ficha para un familiar
+                    </li>
+                    <li class="benefit-item benefit--no">
+                        <span class="benefit-icon">✗</span>
+                        Ver qué médico te atendió
+                    </li>
+                </ul>
+
+                <button class="card-btn card-btn--teal" onclick="irSinCuenta()">
+                    Continuar sin cuenta
+                    <span class="btn-arrow">→</span>
+                </button>
+            </div>
+
+            <!-- Divisor central -->
+            <div class="divider">
+                <div class="divider-line"></div>
+                <span class="divider-text">o</span>
+                <div class="divider-line"></div>
+            </div>
+
+            <!-- OPCIÓN 2: Crear cuenta -->
+            <div class="option-card option-card--featured" id="cardCon">
+                <div class="card-glow card-glow--gold"></div>
+                <div class="featured-badge">⭐ Recomendado</div>
+
+                <div class="card-top">
+                    <div class="card-icon card-icon--gold">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/>
+                            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                            <path d="M16 13l1.5 1.5L20 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="card-label card-label--gold">Cuenta personal</div>
+                </div>
+
+                <h2 class="card-title">Crear una cuenta</h2>
+                <p class="card-desc">Regístrate y accede a todos los beneficios: historial completo, fichas para familiares y mucho más.</p>
+
+                <ul class="benefit-list">
+                    <li class="benefit-item benefit--yes">
+                        <span class="benefit-icon">✓</span>
+                        Ver especialidades disponibles
+                    </li>
+                    <li class="benefit-item benefit--yes">
+                        <span class="benefit-icon">✓</span>
+                        Reservar ficha médica
+                    </li>
+                    <li class="benefit-item benefit--yes">
+                        <span class="benefit-icon">✓</span>
+                        Ver horarios y médicos
+                    </li>
+                    <li class="benefit-item benefit--yes">
+                        <span class="benefit-icon">✓</span>
+                        Historial completo de consultas
+                    </li>
+                    <li class="benefit-item benefit--yes">
+                        <span class="benefit-icon">✓</span>
+                        Reservar ficha para un familiar
+                    </li>
+                    <li class="benefit-item benefit--yes">
+                        <span class="benefit-icon">✓</span>
+                        Ver qué médico te atendió
+                    </li>
+                </ul>
+
+                <button class="card-btn card-btn--gold" onclick="abrirRegistro()">
+                    Crear mi cuenta
+                    <span class="btn-arrow">→</span>
+                </button>
+            </div>
+
+        </div><!-- /cards-wrapper -->
+
+        <!-- Nota de seguridad -->
+        <p class="security-note">
+            🔒 Tus datos están protegidos. Solo mayores de 18 años pueden crear una cuenta.
+        </p>
+
+    </main>
+
+    <!-- ══════════════════════════════════════════
+         MODAL REGISTRO PACIENTE
+    ══════════════════════════════════════════ -->
+    <div class="modal-overlay" id="modalRegistro">
+        <div class="modal">
+
+            <div class="modal-header">
+                <div>
+                    <h3 class="modal-title">Crear cuenta de paciente</h3>
+                    <p class="modal-subtitle">Completa tus datos personales</p>
+                </div>
+                <button class="modal-close" onclick="cerrarModal()">✕</button>
+            </div>
+
+            <form class="modal-form" id="formRegistro" onsubmit="registrarPaciente(event)">
+
+                <div class="form-grid">
+                    <div class="field-group">
+                        <label class="field-label">Nombre(s) *</label>
+                        <input class="field-input" type="text" id="reg_nombre" placeholder="Juan Carlos" required>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Apellido paterno *</label>
+                        <input class="field-input" type="text" id="reg_ap_paterno" placeholder="Pérez" required>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Apellido materno *</label>
+                        <input class="field-input" type="text" id="reg_ap_materno" placeholder="López" required>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="field-group">
+                        <label class="field-label">Fecha de nacimiento * <span class="field-hint">(mayor de 18 años)</span></label>
+                        <input class="field-input" type="date" id="reg_fecha_nac" required>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Sexo *</label>
+                        <select class="field-input" id="reg_sexo" required>
+                            <option value="" disabled selected>Seleccionar</option>
+                            <option value="M">Masculino</option>
+                            <option value="F">Femenino</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="field-group">
+                        <label class="field-label">CI (Carnet de identidad) *</label>
+                        <input class="field-input" type="text" id="reg_ci" placeholder="12345678" required>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Teléfono *</label>
+                        <input class="field-input" type="tel" id="reg_telefono" placeholder="70000000" required>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Dirección</label>
+                    <input class="field-input" type="text" id="reg_direccion" placeholder="Av. Arce, La Paz">
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Correo electrónico *</label>
+                    <input class="field-input" type="email" id="reg_email" placeholder="correo@ejemplo.com" required>
+                </div>
+
+                <div class="form-grid">
+                    <div class="field-group">
+                        <label class="field-label">Contraseña *</label>
+                        <input class="field-input" type="password" id="reg_password" placeholder="Mínimo 8 caracteres" required minlength="8">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Confirmar contraseña *</label>
+                        <input class="field-input" type="password" id="reg_password2" placeholder="Repite la contraseña" required>
+                    </div>
+                </div>
+
+                <div id="msgRegistro" class="form-msg"></div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="cerrarModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary" id="btnRegistrar">
+                        <span class="btn-text">Crear mi cuenta</span>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/opcion.js"></script>
+</body>
+</html>

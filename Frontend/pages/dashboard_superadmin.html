@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperAdmin — Hospital de Clínicas</title>
+    <link rel="stylesheet" href="../css/dashboard_superadmin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     SIDEBAR
+══════════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-brand">
+        <img src="/Frontend/images/logo.jpg" alt="Logo" class="sidebar-logo">
+        <div>
+            <span class="sidebar-title">Hospital de Clínicas</span>
+            <span class="sidebar-role">👑 SuperAdmin</span>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <p class="nav-section-label">Principal</p>
+        <ul>
+            <li class="nav-item active" data-section="dashboard" onclick="mostrarSeccion('dashboard', this)">
+                <span class="nav-icon">📊</span> Panel de Control
+            </li>
+            <li class="nav-item" data-section="superadmins" onclick="mostrarSeccion('superadmins', this)">
+                <span class="nav-icon">👑</span> SuperAdmins
+            </li>
+            <li class="nav-item" data-section="admins" onclick="mostrarSeccion('admins', this)">
+                <span class="nav-icon">🧑‍💼</span> Gestión de Admins
+            </li>
+        </ul>
+
+        <p class="nav-section-label">Sistema</p>
+        <ul>
+            <li class="nav-item" data-section="medicos" onclick="mostrarSeccion('medicos', this)">
+                <span class="nav-icon">🧑‍⚕️</span> Control de Médicos
+            </li>
+            <li class="nav-item" data-section="solicitudes" onclick="mostrarSeccion('solicitudes', this)">
+                <span class="nav-icon">🔐</span> Solicitudes
+                <span class="nav-badge" id="badgeSolicitudes">0</span>
+            </li>
+            <li class="nav-item" data-section="bloqueados" onclick="mostrarSeccion('bloqueados', this)">
+                <span class="nav-icon">⚠️</span> Bloqueados
+                <span class="nav-badge" id="badgeBloqueados">0</span>
+            </li>
+            <li class="nav-item" data-section="auditoria" onclick="mostrarSeccion('auditoria', this)">
+                <span class="nav-icon">📋</span> Auditoría
+            </li>
+        </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="sidebar-user">
+            <div class="user-avatar" id="userAvatar">S</div>
+            <div class="user-info">
+                <span class="user-email" id="userEmail">superadmin</span>
+                <span class="user-tag">SuperAdmin</span>
+            </div>
+        </div>
+        <button class="btn-logout" onclick="cerrarSesion()">
+            <span>⏻</span> Salir
+        </button>
+    </div>
+</aside>
+
+<!-- ══════════════════════════════════════════
+     CONTENIDO PRINCIPAL
+══════════════════════════════════════════ -->
+<main class="main" id="mainContent">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+            <div>
+                <h1 class="page-title" id="pageTitle">Panel de Control</h1>
+                <p class="page-date" id="pageDate"></p>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <span class="topbar-status"><span class="status-dot"></span> Sistema activo</span>
+        </div>
+    </div>
+
+    <!-- ── SECCIÓN: DASHBOARD ───────────────────────── -->
+    <section class="section active" id="sec-dashboard">
+        <div class="stats-grid">
+            <div class="stat-card" style="--accent:#2DD4BF">
+                <div class="stat-icon">👥</div>
+                <div class="stat-info">
+                    <span class="stat-label">Total Usuarios</span>
+                    <span class="stat-value" id="totalUsuarios">—</span>
+                </div>
+            </div>
+            <div class="stat-card" style="--accent:#60A5FA">
+                <div class="stat-icon">🧑‍⚕️</div>
+                <div class="stat-info">
+                    <span class="stat-label">Médicos</span>
+                    <span class="stat-value" id="totalMedicos">—</span>
+                </div>
+            </div>
+            <div class="stat-card" style="--accent:#A78BFA">
+                <div class="stat-icon">🏥</div>
+                <div class="stat-info">
+                    <span class="stat-label">Pacientes</span>
+                    <span class="stat-value" id="totalPacientes">—</span>
+                </div>
+            </div>
+            <div class="stat-card" style="--accent:#F472B6">
+                <div class="stat-icon">📋</div>
+                <div class="stat-info">
+                    <span class="stat-label">Fichas Hoy</span>
+                    <span class="stat-value" id="totalFichas">—</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Actividad Reciente</h2>
+                    <button class="btn-link" onclick="mostrarSeccion('auditoria', document.querySelector('[data-section=auditoria]'))">Ver todo →</button>
+                </div>
+                <ul class="activity-list" id="actividadReciente">
+                    <li class="activity-item skeleton"></li>
+                    <li class="activity-item skeleton"></li>
+                    <li class="activity-item skeleton"></li>
+                </ul>
+            </div>
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Cuentas Bloqueadas</h2>
+                    <button class="btn-link" onclick="mostrarSeccion('bloqueados', document.querySelector('[data-section=bloqueados]'))">Ver todo →</button>
+                </div>
+                <ul class="activity-list" id="bloqueadosResumen">
+                    <li class="activity-item skeleton"></li>
+                    <li class="activity-item skeleton"></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── SECCIÓN: SUPERADMINS ─────────────────────── -->
+    <section class="section" id="sec-superadmins">
+        <div class="section-toolbar">
+            <input class="search-input" type="text" placeholder="🔍 Buscar superadmin..." oninput="filtrarTabla(this, 'tablaSuperAdmins')">
+            <button class="btn-primary" onclick="abrirModal('modalCrearSuperAdmin')">+ Crear SuperAdmin</button>
+        </div>
+        <div class="panel">
+            <table class="data-table" id="tablaSuperAdmins">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Estado</th>
+                        <th>Perfil</th>
+                        <th>Registro</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="bodySuperAdmins">
+                    <tr><td colspan="5" class="table-loading">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modal crear superadmin -->
+        <div class="modal-overlay" id="modalCrearSuperAdmin">
+            <div class="modal">
+                <div class="modal-header">
+                    <div class="modal-header-info">
+                        <span class="modal-icon">👑</span>
+                        <div>
+                            <h3>Crear SuperAdmin</h3>
+                            <p class="modal-subtitle">Se asignará una contraseña temporal</p>
+                        </div>
+                    </div>
+                    <button class="modal-close" onclick="cerrarModal('modalCrearSuperAdmin')">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="field-group">
+                        <label class="field-label">Correo electrónico <span class="field-required">*</span></label>
+                        <input class="field-input" type="email" id="saEmail" placeholder="ejemplo@gmail.com">
+                        <span class="field-hint">Debe ser una dirección @gmail.com</span>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Contraseña temporal <span class="field-required">*</span></label>
+                        <div class="input-eye-wrap">
+                            <input class="field-input" type="password" id="saPassword" placeholder="Mín. 8 caracteres" oninput="medirSeguridad(this.value, 'saBar', 'saBarLabel')">
+                            <button type="button" class="btn-eye" onclick="toggleEye('saPassword', this)">👁</button>
+                        </div>
+                        <div class="password-strength">
+                            <div class="strength-bar" id="saBar"><div class="strength-fill"></div></div>
+                            <span class="strength-label" id="saBarLabel">—</span>
+                        </div>
+                        <span class="field-hint">El usuario deberá cambiarla al completar su perfil</span>
+                    </div>
+                    <p class="modal-msg" id="msgCrearSA"></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="cerrarModal('modalCrearSuperAdmin')">Cancelar</button>
+                    <button class="btn-primary" onclick="crearUsuario('superadmin', 'saEmail', 'saPassword', 'msgCrearSA', 'modalCrearSuperAdmin', cargarSuperAdmins)">Crear SuperAdmin</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── SECCIÓN: ADMINS ──────────────────────────── -->
+    <section class="section" id="sec-admins">
+        <div class="section-toolbar">
+            <input class="search-input" type="text" placeholder="🔍 Buscar admin..." oninput="filtrarTabla(this, 'tablaAdmins')">
+            <button class="btn-primary" onclick="abrirModal('modalCrearAdmin')">+ Crear Admin</button>
+        </div>
+        <div class="panel">
+            <table class="data-table" id="tablaAdmins">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Estado</th>
+                        <th>Perfil</th>
+                        <th>Registro</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="bodyAdmins">
+                    <tr><td colspan="5" class="table-loading">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modal crear admin -->
+        <div class="modal-overlay" id="modalCrearAdmin">
+            <div class="modal">
+                <div class="modal-header">
+                    <div class="modal-header-info">
+                        <span class="modal-icon">🧑‍💼</span>
+                        <div>
+                            <h3>Crear Admin</h3>
+                            <p class="modal-subtitle">Se asignará una contraseña temporal</p>
+                        </div>
+                    </div>
+                    <button class="modal-close" onclick="cerrarModal('modalCrearAdmin')">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="field-group">
+                        <label class="field-label">Correo electrónico <span class="field-required">*</span></label>
+                        <input class="field-input" type="email" id="adminEmail" placeholder="ejemplo@gmail.com">
+                        <span class="field-hint">Debe ser una dirección @gmail.com</span>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Contraseña temporal <span class="field-required">*</span></label>
+                        <div class="input-eye-wrap">
+                            <input class="field-input" type="password" id="adminPassword" placeholder="Mín. 8 caracteres" oninput="medirSeguridad(this.value, 'adminBar', 'adminBarLabel')">
+                            <button type="button" class="btn-eye" onclick="toggleEye('adminPassword', this)">👁</button>
+                        </div>
+                        <div class="password-strength">
+                            <div class="strength-bar" id="adminBar"><div class="strength-fill"></div></div>
+                            <span class="strength-label" id="adminBarLabel">—</span>
+                        </div>
+                        <span class="field-hint">El admin deberá cambiarla al completar su perfil</span>
+                    </div>
+                    <p class="modal-msg" id="msgCrearAdmin"></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="cerrarModal('modalCrearAdmin')">Cancelar</button>
+                    <button class="btn-primary" onclick="crearUsuario('admin', 'adminEmail', 'adminPassword', 'msgCrearAdmin', 'modalCrearAdmin', cargarAdmins)">Crear Admin</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── SECCIÓN: MÉDICOS ─────────────────────────── -->
+    <section class="section" id="sec-medicos">
+        <div class="section-toolbar">
+            <input class="search-input" type="text" placeholder="🔍 Buscar médico..." oninput="filtrarTabla(this, 'tablaMedicos')">
+        </div>
+        <div class="panel">
+            <table class="data-table" id="tablaMedicos">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Especialidad</th>
+                        <th>Perfil</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="bodyMedicos">
+                    <tr><td colspan="5" class="table-loading">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ── SECCIÓN: SOLICITUDES ─────────────────────── -->
+    <section class="section" id="sec-solicitudes">
+        <div class="panel">
+            <div class="panel-header">
+                <h2 class="panel-title">Solicitudes de Recuperación</h2>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr><th>Email</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr>
+                </thead>
+                <tbody id="bodySolicitudes">
+                    <tr><td colspan="4" class="table-loading">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ── SECCIÓN: BLOQUEADOS ──────────────────────── -->
+    <section class="section" id="sec-bloqueados">
+        <div class="panel">
+            <div class="panel-header">
+                <h2 class="panel-title">Usuarios Bloqueados</h2>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr><th>Email</th><th>Intentos</th><th>Fecha Bloqueo</th><th>Acciones</th></tr>
+                </thead>
+                <tbody id="tablaBloqueados">
+                    <tr><td colspan="4" class="table-loading">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ── SECCIÓN: AUDITORÍA ───────────────────────── -->
+    <section class="section" id="sec-auditoria">
+        <div class="section-toolbar">
+            <input class="search-input" type="text" placeholder="🔍 Buscar acción o usuario..." oninput="filtrarTabla(this, 'tablaAuditoria')">
+        </div>
+        <div class="panel">
+            <table class="data-table" id="tablaAuditoria">
+                <thead>
+                    <tr><th>Usuario</th><th>Acción</th><th>Fecha</th></tr>
+                </thead>
+                <tbody id="bodyAuditoria">
+                    <tr><td colspan="3" class="table-loading">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<!-- ══════════════════════════════════════════
+     MODAL CONFIRMACIÓN GENÉRICO
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="modalConfirm">
+    <div class="modal modal-sm">
+        <div class="modal-header">
+            <h3 id="confirmTitle">¿Confirmar acción?</h3>
+            <button class="modal-close" onclick="cerrarModal('modalConfirm')">✕</button>
+        </div>
+        <div class="modal-body">
+            <p id="confirmMsg" style="font-size:0.9rem;color:var(--text-muted);line-height:1.6"></p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="cerrarModal('modalConfirm')">Cancelar</button>
+            <button class="btn-primary" id="confirmBtn">Confirmar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="../js/dashboard_superadmin.js"></script>
+</body>
+</html>
